@@ -1,3 +1,4 @@
+import Register from "./pages/Register";
 import { Routes, Route } from "react-router-dom";
 
 import Login from "./pages/Login";
@@ -18,7 +19,10 @@ function App() {
                 path="/otp"
                 element={<OTP />}
             />
-
+<Route
+    path="/register"
+    element={<Register />}
+/>
         </Routes>
 
     );

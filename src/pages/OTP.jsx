@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function OTP() {
@@ -7,6 +7,7 @@ function OTP() {
     const [otp, setOtp] = useState("");
 
     const location = useLocation();
+    const navigate = useNavigate();
 
     const email = location.state?.email;
 
@@ -24,7 +25,19 @@ function OTP() {
 
             console.log(response.data);
 
-            alert(response.data.message);
+            if (response.data.isRegistered) {
+
+    navigate("/dashboard");
+
+} else {
+
+    navigate("/register", {
+        state: {
+            email
+        }
+    });
+
+}
 
         } catch (error) {
 
