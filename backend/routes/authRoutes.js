@@ -8,19 +8,26 @@ const otpStore = {};
 // Generate OTP
 router.post("/send-otp", (req, res) => {
 
+    console.log("========== SEND OTP ROUTE HIT ==========");
+
     const { email } = req.body;
+
+    console.log("Received Email:", email);
 
     const otp = Math.floor(100000 + Math.random() * 900000);
 
+    console.log("Generated OTP:", otp);
+
     const sql = `
-INSERT INTO otp (email, otp)
-VALUES (?, ?)
-ON DUPLICATE KEY UPDATE otp = VALUES(otp)
-`;
+        INSERT INTO otp (email, otp)
+        VALUES (?, ?)
+        ON DUPLICATE KEY UPDATE otp = VALUES(otp)
+    `;
 
     db.query(sql, [email, otp], (err, result) => {
 
         if (err) {
+            console.log("Database Error:");
             console.log(err);
 
             return res.status(500).json({
@@ -29,11 +36,10 @@ ON DUPLICATE KEY UPDATE otp = VALUES(otp)
             });
         }
 
-        console.log("Email:", email);
-        console.log("Generated OTP:", otp);
         console.log("OTP Saved Successfully");
+        console.log("Database Result:", result);
 
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "OTP Generated Successfully"
         });
